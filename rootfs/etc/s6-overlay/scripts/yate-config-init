@@ -1,0 +1,25 @@
+#!/usr/bin/with-contenv bash
+
+#/usr/local/etc/yate/
+#/config/yate
+
+if [[ ! -d "/config/yate/" ]]; then
+    mkdir -p /config/yate/
+    chmod -R a+rw /config/yate
+fi
+
+if [[ -d "/usr/local/etc/yate/" ]]; then
+    for filename in /usr/local/etc/yate/*; do
+        if [ ! -f /config/yate/$(basename $filename) ]; then
+            echo "File $(basename $filename) not found!"
+            cp -p $filename /config/yate/
+            #chmod -R a+rw /usr/local/etc/yate
+        fi
+    done
+    rm -R /usr/local/etc/yate/
+    ln -s /config/yate/ /usr/local/etc/yate
+fi
+
+#chmod -R a+rw /config/yate
+
+
